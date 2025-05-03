@@ -1,18 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { Text, TouchableOpacity } from "react-native";
 
-export default (props) => {
+export default ({ timer, onTimerEnd }) => {
   const [isRunning, setIsRunning] = useState(true);
-  const [startTime, setStartTime] = useState(1500);
+  const [startTime, setStartTime] = useState(timer);
+
+  // Reinicia o temporizador sempre que a prop `timer` mudar
+  useEffect(() => {
+    setStartTime(timer);
+    setIsRunning(true); // Opcional: inicia automaticamente o temporizador ao mudar
+  }, [timer]);
 
   useEffect(() => {
-    let timer;
+    let interval;
     if (isRunning && startTime > 0) {
-      timer = setInterval(() => {
+      interval = setInterval(() => {
         setStartTime((prevTime) => prevTime - 1);
       }, 1000);
+    } else if (startTime === 0) {
+      onTimerEnd && onTimerEnd(); // Notifica o fim do temporizador
     }
-    return () => clearInterval(timer); // Limpa o intervalo ao desmontar ou quando isRunning muda
+    return () => clearInterval(interval); // Limpa o intervalo ao desmontar ou quando isRunning muda
   }, [isRunning, startTime]);
 
   const formatTime = (time) => {
@@ -23,6 +31,7 @@ export default (props) => {
       "0"
     )}`;
   };
+
   return (
     <>
       <Text>{isRunning ? "Running" : "Stopped"}</Text>
@@ -30,7 +39,7 @@ export default (props) => {
       <TouchableOpacity onPress={() => setIsRunning(!isRunning)}>
         <Text>{isRunning ? "Pause" : "Resume"}</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => setStartTime(1500)}>
+      <TouchableOpacity onPress={() => setStartTime(timer)}>
         <Text>Reset</Text>
       </TouchableOpacity>
     </>
