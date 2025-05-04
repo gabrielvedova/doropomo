@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import { Text } from "react-native";
+import { Text, View, StyleSheet, Dimensions } from "react-native";
 import Stopwatch from "./Stopwatch";
 
-export default () => {
-  const totalTime = 14400; // 4 horas
-  const cycleTime = 7200; // 2 horas
-  const study = 1500; // 25 minutos
-  const shortBreak = 300; // 5 minutos
-  const longBreak = 900; // 15 minutos
+export default ({
+  totalTime = 7200,
+  cycleTime = 7200,
+  study = 1500,
+  shortBreak = 300,
+  longBreak = 900,
+  isRunning,
+}) => {
   const totalIntervals = Math.floor(
     (cycleTime / (study + shortBreak)) * 2 * (totalTime / cycleTime)
   ); // Total de intervalos de estudo e pausa
@@ -51,7 +53,12 @@ export default () => {
       {currentType === "done" ? (
         <Text>Todos os intervalos concluídos!</Text>
       ) : (
-        <>
+        <View style={styles.timerContainer}>
+          <Stopwatch
+            timer={timerDuration}
+            onTimerEnd={handleTimerEnd}
+            isRunning={isRunning}
+          />
           <Text>
             {currentType === "study"
               ? "Estudo"
@@ -59,9 +66,27 @@ export default () => {
               ? "Intervalo Curto"
               : "Intervalo Longo"}
           </Text>
-          <Stopwatch timer={timerDuration} onTimerEnd={handleTimerEnd} />
-        </>
+        </View>
       )}
     </>
   );
 };
+
+// Obtém as dimensões da tela
+const { width, height } = Dimensions.get("window");
+
+// Define o tamanho do círculo como uma fração da largura ou altura da tela
+const circleSize = Math.min(width, height) * 0.6; // 60% do menor lado da tela
+
+const styles = StyleSheet.create({
+  timerContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: circleSize,
+    width: circleSize,
+    borderRadius: circleSize / 2,
+    borderColor: "#000",
+    borderWidth: 1,
+    margin: 10,
+  },
+});

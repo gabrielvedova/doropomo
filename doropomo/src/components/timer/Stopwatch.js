@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Text, TouchableOpacity } from "react-native";
 
-export default ({ timer, onTimerEnd }) => {
-  const [isRunning, setIsRunning] = useState(true);
+export default ({ timer, onTimerEnd, isRunning }) => {
   const [startTime, setStartTime] = useState(timer);
 
   // Reinicia o temporizador sempre que a prop `timer` mudar
   useEffect(() => {
     setStartTime(timer);
-    setIsRunning(true); // Opcional: inicia automaticamente o temporizador ao mudar
+    // setIsRunning(true); // Opcional: inicia automaticamente o temporizador ao mudar
   }, [timer]);
 
   useEffect(() => {
@@ -34,14 +33,15 @@ export default ({ timer, onTimerEnd }) => {
 
   return (
     <>
-      <Text>{isRunning ? "Running" : "Stopped"}</Text>
-      <Text>{formatTime(startTime)}</Text>
-      <TouchableOpacity onPress={() => setIsRunning(!isRunning)}>
-        <Text>{isRunning ? "Pause" : "Resume"}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => setStartTime(timer)}>
-        <Text>Reset</Text>
-      </TouchableOpacity>
+      <Text
+        style={{
+          fontSize: 42,
+          fontWeight: "bold",
+          color: startTime > 0 ? "black" : "red",
+        }}
+      >
+        {formatTime(startTime)}
+      </Text>
     </>
   );
 };
