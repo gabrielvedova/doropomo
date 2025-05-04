@@ -1,12 +1,22 @@
 import React, { useState } from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import Intervals from "../components/timer/Intervals";
+import { useRoute } from "@react-navigation/native";
 
 export default (props) => {
+  const route = useRoute();
+  const { Pomodoro } = route.params;
   const [isRunning, setIsRunning] = useState(false);
   return (
     <View style={styles.container}>
-      <Intervals isRunning={isRunning} />
+      <Intervals
+        isRunning={isRunning}
+        totalCycles={Pomodoro.cycles}
+        cycleTime={Pomodoro.qntdPomodoro}
+        shortBreak={Pomodoro.shortBreak}
+        longBreak={Pomodoro.longBreak}
+        study={Pomodoro.duration}
+      />
       <TouchableOpacity
         onPress={() => setIsRunning(!isRunning)}
         style={styles.button}
