@@ -3,16 +3,14 @@ import { Text, View, StyleSheet, Dimensions } from "react-native";
 import Stopwatch from "./Stopwatch";
 
 export default ({
-  totalTime = 7200,
-  cycleTime = 7200,
-  study = 1500,
-  shortBreak = 300,
-  longBreak = 900,
+  totalCycles = 2,
+  cycleTime = 4,
+  study = 5,
+  shortBreak = 3,
+  longBreak = 9,
   isRunning,
 }) => {
-  const totalIntervals = Math.floor(
-    (cycleTime / (study + shortBreak)) * 2 * (totalTime / cycleTime)
-  ); // Total de intervalos de estudo e pausa
+  const totalIntervals = Math.floor(cycleTime * 2 * totalCycles); // Total de intervalos de estudo e pausa
 
   const [currentInterval, setCurrentInterval] = useState(0); // Controle do intervalo atual
   const [currentType, setCurrentType] = useState("study"); // Tipo atual (estudo ou pausa)
