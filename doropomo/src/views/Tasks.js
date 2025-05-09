@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, FlatList, TouchableOpacity, TextInput } from "react-native";
 import tasks from "../tasks.json";
 
 export default props => {
-    
+
     const [listTasks, setListTasks] = useState(tasks);
     const [editingTask, setEditingTask] = useState(null);
     const [newTitle, setNewTitle] = useState("");
+    const [isEditing, setIsEditing] = useState(false);
 
     const editTask = (id) => {
         setListTasks((prevTasks) =>
@@ -24,31 +25,27 @@ export default props => {
     return (
         <View style={styles.container}>
             <Text>Tasks</Text>
-            <FlatList
+            {isEditing ? (
+                <View>
+                    <TextInput
+                        style={styles.input}
+                        value={newTitle}
+                        onChangeText={setNewTitle}
+                        placeholder="Edit task title"
+                    />
+                    <TouchableOpacity onPress={() => {editTask(editingTask); setIsEditing(false);}}>
+                        <Text>Save</Text>
+                    </TouchableOpacity>
+                </View>
+            ) : <FlatList
                 data={listTasks}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
                     <View style={styles.taskContainer}>
-                        {editingTask === item.id ? (
-                            <View>
-                                <TextInput
-                                    style={styles.input}
-                                    value={newTitle}
-                                    onChangeText={setNewTitle}
-                                    placeholder="Edit task title"
-                                />
-                                <TouchableOpacity onPress={() => editTask(item.id)}>
-                                    <Text>Save</Text>
-                                </TouchableOpacity>
-                            </View>
-                        ) : (
-                            <View>
-                                <Text>{item.title}</Text>
-                                <TouchableOpacity onPress={() => setEditingTask(item.id)}>
-                                    <Text>Edit</Text>
-                                </TouchableOpacity>
-                            </View>
-                        )}
+                        <Text>{item.title}</Text>
+                        <TouchableOpacity onPress={() => {setEditingTask(item.id); setIsEditing(true);}}>
+                            <Text>Edit</Text>
+                        </TouchableOpacity>
                         <TouchableOpacity onPress={() => deleteTask(item.id)}>
                             <Text>Delete</Text>
                         </TouchableOpacity>
@@ -59,7 +56,7 @@ export default props => {
                         <Text>No tasks available</Text>
                     </View>
                 )}
-            />
+            />}
         </View>
     );
 }
