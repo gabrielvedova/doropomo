@@ -42,10 +42,10 @@ export default props => {
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
                     <View style={styles.taskContainer}>
-                        <Text>{item.title}</Text>
                         <TouchableOpacity onPress={() => {setEditingTask(item.id); setIsEditing(true);}}>
                             <Text>Edit</Text>
                         </TouchableOpacity>
+                        <Text>{item.title}</Text>
                         <TouchableOpacity onPress={() => deleteTask(item.id)}>
                             <Text>Delete</Text>
                         </TouchableOpacity>
@@ -69,6 +69,9 @@ const styles = StyleSheet.create({
     },
     taskContainer: {
         marginBottom: 10,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        width: "80%",
     },
     input: {
         borderWidth: 1,
