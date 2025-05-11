@@ -30,6 +30,7 @@ export default ({
     setEditingTask(null); // Finaliza o modo de edição
     setNewTitle(""); // Limpa o campo de entrada
   };
+
   const deleteTask = (id) => {
     setListTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
   };

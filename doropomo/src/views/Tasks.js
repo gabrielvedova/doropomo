@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   SafeAreaView,
@@ -7,16 +7,42 @@ import {
   View,
   TextInput,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import ListTasks from "../components/tasks/ListTasks";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-import tasks from "../tasks.json";
-
 export default ({ showButton = true }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [listTasks, setListTasks] = useState(tasks);
+  const [listTasks, setListTasks] = useState([]);
   const [isNewTask, setIsNewTask] = useState(false);
   const [newTaskTitle, setNewTaskTitle] = useState("");
+
+  // Carregar tarefas do AsyncStorage ao montar o componente
+  useEffect(() => {
+    const loadTasks = async () => {
+      try {
+        const storedTasks = await AsyncStorage.getItem("tasks");
+        if (storedTasks) {
+          setListTasks(JSON.parse(storedTasks));
+        }
+      } catch (e) {
+        console.error("Erro ao carregar tarefas:", e);
+      }
+    };
+    loadTasks();
+  }, []);
+
+  // Salvar tarefas no AsyncStorage sempre que a lista for alterada
+  useEffect(() => {
+    const saveTasks = async () => {
+      try {
+        await AsyncStorage.setItem("tasks", JSON.stringify(listTasks));
+      } catch (e) {
+        console.error("Erro ao salvar tarefas:", e);
+      }
+    };
+    saveTasks();
+  }, [listTasks]);
 
   const addNewTask = () => {
     if (newTaskTitle.trim() === "") return; // Evita adicionar tarefas vazias
@@ -59,7 +85,7 @@ export default ({ showButton = true }) => {
             setListTasks={setListTasks}
             showButton={showButton}
           />
-          {!isEditing && showButton ? (
+          {showButton && !isEditing && (
             <TouchableOpacity
               onPress={() => {
                 setIsNewTask(true);
@@ -68,7 +94,7 @@ export default ({ showButton = true }) => {
             >
               <Ionicons name="add-circle" size={92} color="black" />
             </TouchableOpacity>
-          ) : null}
+          )}
         </>
       )}
     </SafeAreaView>
