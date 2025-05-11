@@ -1,79 +1,130 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, FlatList, TouchableOpacity, TextInput } from "react-native";
-import tasks from "../../tasks.json";
+import {
+  Text,
+  View,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  TextInput,
+  SafeAreaView,
+} from "react-native";
 
-export default props => {
+import Fontisto from "@expo/vector-icons/Fontisto";
 
-    const [listTasks, setListTasks] = useState(tasks);
-    const [editingTask, setEditingTask] = useState(null);
-    const [newTitle, setNewTitle] = useState("");
-    const [isEditing, setIsEditing] = useState(false);
+export default ({ isEditing, setIsEditing, listTasks, setListTasks }) => {
+  const [editingTask, setEditingTask] = useState(null);
+  const [newTitle, setNewTitle] = useState("");
 
-    const editTask = (id) => {
-        setListTasks((prevTasks) =>
-            prevTasks.map((task) =>
-                task.id === id ? { ...task, title: newTitle } : task
-            )
-        );
-        setEditingTask(null); // Finaliza o modo de edição
-        setNewTitle(""); // Limpa o campo de entrada
-    };
-    const deleteTask = (id) => {
-        setListTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
-    };
-
-    return (
-        <>
-            <Text>Tasks</Text>
-            {isEditing ? (
-                <View>
-                    <TextInput
-                        style={styles.input}
-                        value={newTitle}
-                        onChangeText={setNewTitle}
-                        placeholder="Edit task title"
-                    />
-                    <TouchableOpacity onPress={() => { editTask(editingTask); setIsEditing(false); }}>
-                        <Text>Save</Text>
-                    </TouchableOpacity>
-                </View>
-            ) : <FlatList
-                data={listTasks}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => (
-                    <View style={styles.taskContainer}>
-                        <TouchableOpacity onPress={() => { setEditingTask(item.id); setIsEditing(true); }}>
-                            <Text>Edit</Text>
-                        </TouchableOpacity>
-                        <Text>{item.title}</Text>
-                        <TouchableOpacity onPress={() => deleteTask(item.id)}>
-                            <Text>Delete</Text>
-                        </TouchableOpacity>
-                    </View>
-                )}
-                ListEmptyComponent={() => (
-                    <View>
-                        <Text>No tasks available</Text>
-                    </View>
-                )}
-            />}
-        </>
+  const editTask = (id) => {
+    setListTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === id ? { ...task, title: newTitle } : task
+      )
     );
-}
+    setEditingTask(null); // Finaliza o modo de edição
+    setNewTitle(""); // Limpa o campo de entrada
+  };
+  const deleteTask = (id) => {
+    setListTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      {isEditing ? (
+        <View>
+          <TextInput
+            style={styles.input}
+            value={newTitle}
+            onChangeText={setNewTitle}
+            placeholder="Edit task title"
+          />
+          <TouchableOpacity
+            onPress={() => {
+              editTask(editingTask);
+              setIsEditing(false);
+            }}
+          >
+            <Text>Save</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <FlatList
+          data={listTasks}
+          keyExtractor={(item) => item.id.toString()}
+          style={styles.listContainer}
+          renderItem={({ item }) => (
+            <View style={styles.taskContainer}>
+              <TouchableOpacity
+                onPress={() => {
+                  setListTasks((prevTasks) =>
+                    prevTasks.map((task) =>
+                      task.id === item.id
+                        ? { ...task, completed: !task.completed }
+                        : task
+                    )
+                  );
+                }}
+              >
+                <Fontisto
+                  name={item.completed ? "checkbox-active" : "checkbox-passive"}
+                  size={24}
+                  color="black"
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  setEditingTask(item.id);
+                  setIsEditing(true);
+                }}
+              >
+                <Text
+                  style={
+                    item.completed
+                      ? { textDecorationLine: "line-through" }
+                      : null
+                  }
+                >
+                  {item.title}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => deleteTask(item.id)}>
+                <Fontisto name="trash" size={24} color="black" />
+              </TouchableOpacity>
+            </View>
+          )}
+          ListEmptyComponent={() => (
+            <View>
+              <Text>No tasks available</Text>
+            </View>
+          )}
+        />
+      )}
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
-
-    taskContainer: {
-        marginBottom: 10,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        width: "80%",
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: "gray",
-        padding: 5,
-        marginBottom: 5,
-        width: 200,
-    },
+  container: {
+    marginTop: 20,
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "#F5FCFF",
+  },
+  listContainer: {
+    width: "100%",
+    marginBottom: 10,
+  },
+  taskContainer: {
+    marginBottom: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "80%",
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "gray",
+    padding: 5,
+    marginBottom: 5,
+    width: 200,
+  },
 });

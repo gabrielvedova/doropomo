@@ -12,7 +12,7 @@ export default (props) => {
         <Text>Home</Text>
       </View>
       <View style={styles.pomodoroContainer}>
-        <Tasks />
+        <Tasks showButton={false} />
         <Timer />
       </View>
       <View>
