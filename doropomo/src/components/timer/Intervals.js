@@ -50,7 +50,7 @@ export default ({
 
       // Alterna entre estudo, pausa curta e pausa longa
       if (nextInterval % 2 === 0) {
-        setCurrentType("Estudo"); // Atualiza o tipo para estudo
+        setCurrentType("study"); // Atualiza o tipo para estudo
         setTimerDuration(study); // Atualiza a duração para estudo
 
         // Adiciona o tempo de estudo ao total acumulado
@@ -58,11 +58,11 @@ export default ({
         setTotalStudyTime(updatedStudyTime);
         saveStudyTime(updatedStudyTime); // Salva no AsyncStorage
       } else if (nextInterval % 2 !== 0 && qntdIntervals < 3) {
-        setCurrentType("Intervalo"); // Atualiza o tipo para intervalo
+        setCurrentType("shortBreak"); // Atualiza o tipo para intervalo
         setTimerDuration(shortBreak); // Atualiza a duração para pausa curta
         setQntdIntervals(qntdIntervals + 1); // Incrementa o contador de intervalos
       } else if (nextInterval % 2 !== 0 && qntdIntervals >= 3) {
-        setCurrentType("Intervalo"); // Atualiza o tipo para intervalo
+        setCurrentType("longBreak"); // Atualiza o tipo para intervalo
         setTimerDuration(longBreak); // Atualiza a duração para pausa longa
         setQntdIntervals(0); // Reinicia o contador de intervalos
       }
@@ -79,7 +79,6 @@ export default ({
         <Text>Todos os intervalos concluídos!</Text>
       ) : (
         <View style={styles.timerContainer}>
-          <Text>{currentType}</Text>
           <Stopwatch
             timer={timerDuration}
             onTimerEnd={handleTimerEnd}

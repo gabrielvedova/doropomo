@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
+import { TimerContext } from "../context/TimerContext";
 import Intervals from "../components/timer/Intervals";
 
 export default (props) => {
-  const [isRunning, setIsRunning] = useState(false);
+  const { isRunning, setIsRunning } = useContext(TimerContext);
+
   return (
     <View style={styles.container}>
       <Intervals isRunning={isRunning} />
