@@ -57,6 +57,7 @@ export default ({ showButton = true }) => {
             setIsEditing={setIsEditing}
             listTasks={listTasks}
             setListTasks={setListTasks}
+            showButton={showButton}
           />
           {!isEditing && showButton ? (
             <TouchableOpacity

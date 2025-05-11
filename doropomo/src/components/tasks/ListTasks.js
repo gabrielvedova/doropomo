@@ -11,7 +11,13 @@ import {
 
 import Fontisto from "@expo/vector-icons/Fontisto";
 
-export default ({ isEditing, setIsEditing, listTasks, setListTasks }) => {
+export default ({
+  isEditing,
+  setIsEditing,
+  listTasks,
+  setListTasks,
+  showButton,
+}) => {
   const [editingTask, setEditingTask] = useState(null);
   const [newTitle, setNewTitle] = useState("");
 
@@ -29,7 +35,9 @@ export default ({ isEditing, setIsEditing, listTasks, setListTasks }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[styles.container, { paddingTop: showButton ? 50 : 10 }]}
+    >
       {isEditing ? (
         <View>
           <TextInput
@@ -53,7 +61,14 @@ export default ({ isEditing, setIsEditing, listTasks, setListTasks }) => {
           keyExtractor={(item) => item.id.toString()}
           style={styles.listContainer}
           renderItem={({ item }) => (
-            <View style={styles.taskContainer}>
+            <View
+              style={[
+                styles.taskContainer,
+                {
+                  width: showButton ? "85%" : "95%",
+                },
+              ]}
+            >
               <TouchableOpacity
                 onPress={() => {
                   setListTasks((prevTasks) =>
@@ -105,20 +120,19 @@ export default ({ isEditing, setIsEditing, listTasks, setListTasks }) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
     flex: 1,
     alignItems: "center",
     backgroundColor: "#F5FCFF",
   },
   listContainer: {
-    width: "100%",
+    width: "80%",
     marginBottom: 10,
   },
   taskContainer: {
     marginBottom: 10,
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "80%",
+    width: "100%",
   },
   input: {
     borderWidth: 1,
