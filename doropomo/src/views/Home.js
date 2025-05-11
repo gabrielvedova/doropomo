@@ -1,5 +1,11 @@
 import React from "react";
-import { Text, SafeAreaView, View, StyleSheet } from "react-native";
+import {
+  Text,
+  SafeAreaView,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import Tasks from "./Tasks";
 import Timer from "./Timer";
 import colors from "../colors.json";
@@ -12,8 +18,12 @@ export default (props) => {
         <Text>Home</Text>
       </View>
       <View style={styles.pomodoroContainer}>
-        <Tasks showButton={false} />
-        <Timer />
+        <TouchableOpacity style={styles.pomodoroItem}>
+          <Tasks showButton={false} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.pomodoroItem}>
+          <Timer />
+        </TouchableOpacity>
       </View>
       <View>
         <Text>Relatory</Text>
@@ -35,6 +45,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     height: "30%",
+    padding: 20,
+  },
+  pomodoroItem: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#C4C0C0",
+    borderRadius: 10,
+    margin: 10,
     padding: 20,
   },
 });
