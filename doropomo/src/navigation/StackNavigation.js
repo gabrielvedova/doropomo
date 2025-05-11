@@ -10,8 +10,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Tasks">
-
+      <Stack.Navigator initialRouteName="Config">
         <Stack.Screen
           name="Config"
           component={ConfigTimer}
@@ -22,7 +21,7 @@ export default function App() {
           component={Timer}
           options={{ headerTitle: "" }}
         />
-        <Stack.Screen 
+        <Stack.Screen
           name="Tasks"
           component={Tasks}
           options={{ headerTitle: "" }}
