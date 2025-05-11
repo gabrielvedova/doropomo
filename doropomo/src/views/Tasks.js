@@ -8,6 +8,7 @@ import {
   TextInput,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import uuid from "react-native-uuid";
 import ListTasks from "../components/tasks/ListTasks";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
@@ -47,7 +48,7 @@ export default ({ showButton = true }) => {
   const addNewTask = () => {
     if (newTaskTitle.trim() === "") return; // Evita adicionar tarefas vazias
     const newTask = {
-      id: listTasks.length + 1, // Gera um novo ID
+      id: uuid.v4(), // Gera um novo ID
       title: newTaskTitle,
       completed: false,
     };
