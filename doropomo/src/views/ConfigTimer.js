@@ -24,7 +24,6 @@ export default ({ navigation }) => {
         placeholder="Pomodoro Duration (minutes)"
         style={styles.input}
         keyboardType="numeric"
-        value={String(Pomodoro.duration)}
         onChangeText={(text) =>
           setPomodoro({ ...Pomodoro, duration: parseInt(text) * 60 })
         }
@@ -33,7 +32,6 @@ export default ({ navigation }) => {
         placeholder="Short Break Duration (minutes)"
         style={styles.input}
         keyboardType="numeric"
-        value={String(Pomodoro.shortBreak)}
         onChangeText={(text) =>
           setPomodoro({ ...Pomodoro, shortBreak: parseInt(text) * 60 })
         }
@@ -42,7 +40,6 @@ export default ({ navigation }) => {
         placeholder="Long Break Duration (minutes)"
         style={styles.input}
         keyboardType="numeric"
-        value={String(Pomodoro.longBreak)}
         onChangeText={(text) =>
           setPomodoro({ ...Pomodoro, longBreak: parseInt(text) * 60 })
         }
@@ -51,7 +48,6 @@ export default ({ navigation }) => {
         placeholder="Number of Pomodoros for Cycle"
         style={styles.input}
         keyboardType="numeric"
-        value={String(Pomodoro.qntdPomodoros)}
         onChangeText={(text) =>
           setPomodoro({ ...Pomodoro, qntdPomodoros: parseInt(text) })
         }
@@ -60,7 +56,6 @@ export default ({ navigation }) => {
         placeholder="Number of Cycles"
         style={styles.input}
         keyboardType="numeric"
-        value={String(Pomodoro.cycles)}
         onChangeText={(text) =>
           setPomodoro({ ...Pomodoro, cycles: parseInt(text) })
         }
@@ -93,7 +88,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   input: {
-    height: 30,
+    height: "auto",
     width: "80%",
     borderColor: "gray",
     borderWidth: 1,
