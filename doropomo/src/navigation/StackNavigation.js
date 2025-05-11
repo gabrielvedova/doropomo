@@ -4,13 +4,19 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Timer from "../views/Timer";
 import Tasks from "../views/Tasks";
 import Home from "../views/Home";
+import TabNavi from "./TabNavigation";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Pomodoro">
+        <Stack.Screen
+          name="Pomodoro"
+          component={TabNavi}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="Home"
           component={Home}
