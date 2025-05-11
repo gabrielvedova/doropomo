@@ -1,19 +1,19 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import ConfigTimer from "../views/ConfigTimer";
 import Timer from "../views/Timer";
 import Tasks from "../views/Tasks";
+import Home from "../views/Home";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Config">
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
-          name="Config"
-          component={ConfigTimer}
+          name="Home"
+          component={Home}
           options={{ headerShown: false }}
         />
         <Stack.Screen
