@@ -3,11 +3,11 @@ import { Text, View, StyleSheet, Dimensions } from "react-native";
 import Stopwatch from "./Stopwatch";
 
 export default ({
-  totalCycles = 2,
+  totalCycles = 1,
   cycleTime = 4,
-  study = 5,
-  shortBreak = 3,
-  longBreak = 9,
+  study = 1500,
+  shortBreak = 300,
+  longBreak = 900,
   isRunning,
 }) => {
   const totalIntervals = Math.floor(cycleTime * 2 * totalCycles); // Total de intervalos de estudo e pausa
@@ -28,14 +28,14 @@ export default ({
 
       // Alterna entre estudo, pausa curta e pausa longa
       if (nextInterval % 2 === 0) {
-        setCurrentType("study");
+        setCurrentType("Estudo"); // Atualiza o tipo para estudo
         setTimerDuration(study); // Atualiza a duração para estudo
       } else if (nextInterval % 2 !== 0 && qntdIntervals < 3) {
-        setCurrentType("shortBreak");
+        setCurrentType("Intervalo"); // Atualiza o tipo para intervalo
         setTimerDuration(shortBreak); // Atualiza a duração para pausa curta
         setQntdIntervals(qntdIntervals + 1); // Incrementa o contador de intervalos
       } else if (nextInterval % 2 !== 0 && qntdIntervals >= 3) {
-        setCurrentType("longBreak");
+        setCurrentType("Intervalo"); // Atualiza o tipo para intervalo
         setTimerDuration(longBreak); // Atualiza a duração para pausa longa
         setQntdIntervals(0); // Reinicia o contador de intervalos
       }
@@ -52,6 +52,7 @@ export default ({
         <Text>Todos os intervalos concluídos!</Text>
       ) : (
         <View style={styles.timerContainer}>
+          <Text>{currentType}</Text>
           <Stopwatch
             timer={timerDuration}
             onTimerEnd={handleTimerEnd}
@@ -74,7 +75,7 @@ export default ({
 const { width, height } = Dimensions.get("window");
 
 // Define o tamanho do círculo como uma fração da largura ou altura da tela
-const circleSize = Math.min(width, height) * 0.6; // 60% do menor lado da tela
+const circleSize = Math.min(width, height) * 0.35; // 35% do menor lado da tela
 
 const styles = StyleSheet.create({
   timerContainer: {
