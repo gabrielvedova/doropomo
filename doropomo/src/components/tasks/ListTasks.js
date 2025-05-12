@@ -57,63 +57,71 @@ export default ({
           </TouchableOpacity>
         </View>
       ) : (
-        <FlatList
-          data={listTasks}
-          keyExtractor={(item) => item.id.toString()}
-          style={styles.listContainer}
-          renderItem={({ item }) => (
-            <View
-              style={[
-                styles.taskContainer,
-                {
-                  width: showButton ? "85%" : "95%",
-                },
-              ]}
-            >
-              <TouchableOpacity
-                onPress={() => {
-                  setListTasks((prevTasks) =>
-                    prevTasks.map((task) =>
-                      task.id === item.id
-                        ? { ...task, completed: !task.completed }
-                        : task
-                    )
-                  );
-                }}
+        <View style={styles.listContainer}>
+          <FlatList
+            data={listTasks}
+            keyExtractor={(item) => item.id.toString()}
+            contentContainerStyle={{
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            renderItem={({ item }) => (
+              <View
+                style={[
+                  styles.itemTask,
+                  {
+                    width: showButton ? "85%" : "95%",
+                  },
+                ]}
               >
-                <Fontisto
-                  name={item.completed ? "checkbox-active" : "checkbox-passive"}
-                  size={24}
-                  color="black"
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  setEditingTask(item.id);
-                  setIsEditing(true);
-                }}
-              >
-                <Text
-                  style={
-                    item.completed
-                      ? { textDecorationLine: "line-through" }
-                      : null
-                  }
+                <TouchableOpacity
+                  onPress={() => {
+                    setListTasks((prevTasks) =>
+                      prevTasks.map((task) =>
+                        task.id === item.id
+                          ? { ...task, completed: !task.completed }
+                          : task
+                      )
+                    );
+                  }}
                 >
-                  {item.title}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => deleteTask(item.id)}>
-                <Fontisto name="trash" size={24} color="black" />
-              </TouchableOpacity>
-            </View>
-          )}
-          ListEmptyComponent={() => (
-            <View>
-              <Text>No tasks available</Text>
-            </View>
-          )}
-        />
+                  <Fontisto
+                    name={
+                      item.completed ? "checkbox-active" : "checkbox-passive"
+                    }
+                    size={24}
+                    color="black"
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    setEditingTask(item.id);
+                    setIsEditing(true);
+                  }}
+                >
+                  <Text
+                    style={
+                      item.completed
+                        ? { textDecorationLine: "line-through" }
+                        : null
+                    }
+                  >
+                    {item.title}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => deleteTask(item.id)}>
+                  <Fontisto name="trash" size={24} color="black" />
+                </TouchableOpacity>
+              </View>
+            )}
+            ListEmptyComponent={() => (
+              <View>
+                <Text>No tasks available</Text>
+              </View>
+            )}
+          />
+        </View>
       )}
     </SafeAreaView>
   );
@@ -122,18 +130,27 @@ export default ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    backgroundColor: "#F5FCFF",
   },
   listContainer: {
-    width: "80%",
+    width: "100%",
     marginBottom: 10,
+    backgroundColor: "#C4C0C088",
+    padding: 10,
+    minHeight: "60%",
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  taskContainer: {
+  itemTask: {
     marginBottom: 10,
+    padding: 10,
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     width: "100%",
+    height: "auto",
+    borderRadius: 10,
+    backgroundColor: "#fff",
   },
   input: {
     borderWidth: 1,

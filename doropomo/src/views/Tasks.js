@@ -11,6 +11,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import uuid from "react-native-uuid";
 import ListTasks from "../components/tasks/ListTasks";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import colors from "../colors.json";
 
 export default ({ showButton = true }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F5FCFF",
+    backgroundColor: colors.background,
   },
   buttonAddTaskContainer: {
     position: "absolute",
