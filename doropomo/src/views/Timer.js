@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { TimerContext } from "../context/TimerContext";
 import Intervals from "../components/timer/Intervals";
+import colors from "../colors.json";
 
 export default (props) => {
   const { isRunning, setIsRunning } = useContext(TimerContext);
@@ -25,6 +26,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
+    backgroundColor: colors.background,
   },
   button: {
     padding: 10,
