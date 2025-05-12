@@ -5,6 +5,8 @@ import Home from "../views/Home";
 import Tasks from "../views/Tasks";
 import Timer from "../views/Timer";
 import PlayerMusic from "../views/PlayerMusic";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import colors from "../colors.json";
 
 const Tab = createBottomTabNavigator();
 
@@ -12,12 +14,48 @@ const TabNavigation = () => {
   return (
     <Tab.Navigator
       initialRouteName="Home"
-      screenOptions={{ headerShown: false }}
+      screenOptions={{
+        headerShown: false,
+        tabBarShowLabel: false,
+        tabBarActiveTintColor: "#000",
+      }}
     >
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Timer" component={Timer} />
-      <Tab.Screen name="Tasks" component={Tasks} />
-      <Tab.Screen name="PlayerMusic" component={PlayerMusic} />
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="home" size={34} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Timer"
+        component={Timer}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="timer" size={30} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Tasks"
+        component={Tasks}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="task" size={30} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="PlayerMusic"
+        component={PlayerMusic}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="music-note" size={30} color={color} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 };
