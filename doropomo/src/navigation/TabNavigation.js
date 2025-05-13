@@ -47,15 +47,6 @@ const TabNavigation = () => {
           ),
         }}
       />
-      <Tab.Screen
-        name="PlayerMusic"
-        component={PlayerMusic}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="music-note" size={30} color={color} />
-          ),
-        }}
-      />
     </Tab.Navigator>
   );
 };
