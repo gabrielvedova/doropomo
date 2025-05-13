@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Dimensions } from "react-native";
+import { Text, View, StyleSheet, Dimensions, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Stopwatch from "./Stopwatch";
 
 export default ({
   totalCycles = 1,
   cycleTime = 4,
-  study = 1500,
+  study = 5,
   shortBreak = 300,
   longBreak = 900,
   isRunning,
@@ -18,6 +18,7 @@ export default ({
   const [timerDuration, setTimerDuration] = useState(study); // Duração do temporizador atual
   const [qntdIntervals, setQntdIntervals] = useState(0); // Contador de intervalos
   const [totalStudyTime, setTotalStudyTime] = useState(0); // Tempo total de estudo acumulado
+  const [isTimerRunning, setIsTimerRunning] = useState(false); // Controle do estado do temporizador
 
   // Carregar o tempo total de estudo do AsyncStorage ao montar o componente
   useEffect(() => {
@@ -44,34 +45,50 @@ export default ({
   };
 
   const handleTimerEnd = () => {
-    if (currentInterval < totalIntervals - 1) {
-      const nextInterval = currentInterval + 1;
-      setCurrentInterval(nextInterval);
+    Alert.alert(
+    "Atenção!",
+    "O tempo acabou! Gostaria de iniciar outro temporizador?",
+    [
+      {
+        text: "Não",
+        onPress: () => {
+          setIsTimerRunning(false);
+        },
+        style: "cancel",
+      },
+      {
+        text: "Sim",
+        onPress: () => {
+          // Lógica original para avançar para o próximo intervalo
+          if (currentInterval < totalIntervals - 1) {
+            const nextInterval = currentInterval + 1;
+            setCurrentInterval(nextInterval);
 
-      // Alterna entre estudo, pausa curta e pausa longa
-      if (nextInterval % 2 === 0) {
-        setCurrentType("study"); // Atualiza o tipo para estudo
-        setTimerDuration(study); // Atualiza a duração para estudo
-
-        // Adiciona o tempo de estudo ao total acumulado
-        const updatedStudyTime = totalStudyTime + study;
-        setTotalStudyTime(updatedStudyTime);
-        saveStudyTime(updatedStudyTime); // Salva no AsyncStorage
-      } else if (nextInterval % 2 !== 0 && qntdIntervals < 3) {
-        setCurrentType("shortBreak"); // Atualiza o tipo para intervalo
-        setTimerDuration(shortBreak); // Atualiza a duração para pausa curta
-        setQntdIntervals(qntdIntervals + 1); // Incrementa o contador de intervalos
-      } else if (nextInterval % 2 !== 0 && qntdIntervals >= 3) {
-        setCurrentType("longBreak"); // Atualiza o tipo para intervalo
-        setTimerDuration(longBreak); // Atualiza a duração para pausa longa
-        setQntdIntervals(0); // Reinicia o contador de intervalos
-      }
-    } else {
-      // Finaliza os intervalos
-      setCurrentType("done");
-      setTimerDuration(0); // Define a duração como 0
-    }
-  };
+            if (nextInterval % 2 === 0) {
+              setCurrentType("study");
+              setTimerDuration(study);
+              const updatedStudyTime = totalStudyTime + study;
+              setTotalStudyTime(updatedStudyTime);
+              saveStudyTime(updatedStudyTime);
+            } else if (nextInterval % 2 !== 0 && qntdIntervals < 3) {
+              setCurrentType("shortBreak");
+              setTimerDuration(shortBreak);
+              setQntdIntervals(qntdIntervals + 1);
+            } else if (nextInterval % 2 !== 0 && qntdIntervals >= 3) {
+              setCurrentType("longBreak");
+              setTimerDuration(longBreak);
+              setQntdIntervals(0);
+            }
+          } else {
+            setCurrentType("done");
+            setTimerDuration(0);
+          }
+        },
+      },
+    ],
+    { cancelable: false }
+  );
+};
 
   return (
     <>
