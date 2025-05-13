@@ -18,7 +18,6 @@ export default ({
   const [timerDuration, setTimerDuration] = useState(study); // Duração do temporizador atual
   const [qntdIntervals, setQntdIntervals] = useState(0); // Contador de intervalos
   const [totalStudyTime, setTotalStudyTime] = useState(0); // Tempo total de estudo acumulado
-  const [isTimerRunning, setIsTimerRunning] = useState(false); // Controle do estado do temporizador
 
   // Carregar o tempo total de estudo do AsyncStorage ao montar o componente
   useEffect(() => {
