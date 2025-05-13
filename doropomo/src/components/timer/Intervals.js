@@ -45,49 +45,49 @@ export default ({
 
   const handleTimerEnd = () => {
     Alert.alert(
-    "Atenção!",
-    "O tempo acabou! Gostaria de iniciar outro temporizador?",
-    [
-      {
-        text: "Não",
-        onPress: () => {
-          setIsTimerRunning(false);
+      "Atenção!",
+      "O tempo acabou! Gostaria de iniciar outro temporizador?",
+      [
+        {
+          text: "Não",
+          onPress: () => {
+            setIsTimerRunning(false);
+          },
+          style: "cancel",
         },
-        style: "cancel",
-      },
-      {
-        text: "Sim",
-        onPress: () => {
-          // Lógica original para avançar para o próximo intervalo
-          if (currentInterval < totalIntervals - 1) {
-            const nextInterval = currentInterval + 1;
-            setCurrentInterval(nextInterval);
+        {
+          text: "Sim",
+          onPress: () => {
+            // Lógica original para avançar para o próximo intervalo
+            if (currentInterval < totalIntervals - 1) {
+              const nextInterval = currentInterval + 1;
+              setCurrentInterval(nextInterval);
 
-            if (nextInterval % 2 === 0) {
-              setCurrentType("study");
-              setTimerDuration(study);
-              const updatedStudyTime = totalStudyTime + study;
-              setTotalStudyTime(updatedStudyTime);
-              saveStudyTime(updatedStudyTime);
-            } else if (nextInterval % 2 !== 0 && qntdIntervals < 3) {
-              setCurrentType("shortBreak");
-              setTimerDuration(shortBreak);
-              setQntdIntervals(qntdIntervals + 1);
-            } else if (nextInterval % 2 !== 0 && qntdIntervals >= 3) {
-              setCurrentType("longBreak");
-              setTimerDuration(longBreak);
-              setQntdIntervals(0);
+              if (nextInterval % 2 === 0) {
+                setCurrentType("study");
+                setTimerDuration(study);
+                const updatedStudyTime = totalStudyTime + study;
+                setTotalStudyTime(updatedStudyTime);
+                saveStudyTime(updatedStudyTime);
+              } else if (nextInterval % 2 !== 0 && qntdIntervals < 3) {
+                setCurrentType("shortBreak");
+                setTimerDuration(shortBreak);
+                setQntdIntervals(qntdIntervals + 1);
+              } else if (nextInterval % 2 !== 0 && qntdIntervals >= 3) {
+                setCurrentType("longBreak");
+                setTimerDuration(longBreak);
+                setQntdIntervals(0);
+              }
+            } else {
+              setCurrentType("done");
+              setTimerDuration(0);
             }
-          } else {
-            setCurrentType("done");
-            setTimerDuration(0);
-          }
+          },
         },
-      },
-    ],
-    { cancelable: false }
-  );
-};
+      ],
+      { cancelable: false }
+    );
+  };
 
   return (
     <>
@@ -117,7 +117,7 @@ export default ({
 const { width, height } = Dimensions.get("window");
 
 // Define o tamanho do círculo como uma fração da largura ou altura da tela
-const circleSize = Math.min(width, height) * 0.35; // 35% do menor lado da tela
+const circleSize = Math.min(width, height) * 0.6; // 60% do menor lado da tela
 
 const styles = StyleSheet.create({
   timerContainer: {
