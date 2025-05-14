@@ -55,6 +55,14 @@ export default ({
           >
             <Text>Save</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setIsEditing(false);
+              setNewTitle("");
+            }}
+          >
+            <Text>Cancel</Text>
+          </TouchableOpacity>
         </View>
       ) : (
         <View style={styles.listContainer}>

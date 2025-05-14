@@ -1,17 +1,20 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, SafeAreaView } from "react-native";
+import { StyleSheet, Text, SafeAreaView, ImageBackground } from "react-native";
 import StackNavigation from "./navigation/StackNavigation";
 import { TimerProvider } from "./context/TimerContext";
-import Tasks from "./views/Tasks";
-import Timer from "./views/Timer";
+import background from "../assets/BackgroundDoropomo.png";
 
 export default function App() {
   return (
     <TimerProvider>
-      {/*<Tasks />*/}
-      {/*<Timer />*/}
-      <StackNavigation />
-      <StatusBar style="auto" />
+      <ImageBackground
+        source={background}
+        resizeMode="cover"
+        style={styles.container}
+      >
+        <StackNavigation />
+        <StatusBar style="auto" />
+      </ImageBackground>
     </TimerProvider>
   );
 }

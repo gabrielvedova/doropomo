@@ -4,7 +4,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import Home from "../views/Home";
 import Tasks from "../views/Tasks";
 import Timer from "../views/Timer";
-import PlayerMusic from "../views/PlayerMusic";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import colors from "../colors.json";
 
