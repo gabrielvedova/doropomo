@@ -13,7 +13,7 @@ export default (props) => {
   return (
     <SafeAreaView style={styles.container}>
       <Timer showButton={false}/>
-      <Tasks showButton={false} />
+      <Tasks showButton={false} showImage={false}/>
     </SafeAreaView>
   );
 };

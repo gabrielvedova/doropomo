@@ -6,6 +6,7 @@ import {
   Text,
   View,
   TextInput,
+  Image,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import uuid from "react-native-uuid";
@@ -13,7 +14,7 @@ import ListTasks from "../components/tasks/ListTasks";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import colors from "../colors.json";
 
-export default ({ showButton = true }) => {
+export default ({ showButton = true, showImage= true }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [listTasks, setListTasks] = useState([]);
   const [isNewTask, setIsNewTask] = useState(false);
@@ -80,6 +81,11 @@ export default ({ showButton = true }) => {
         </View>
       ) : (
         <>
+        {showImage && <Image
+            source={require("../../assets/doropomoLogo.png")}
+            style={{ marginTop: 20, height: 256, width: 256 }} // ajuste os valores conforme desejar
+            resizeMode="contain"
+          />}
           <ListTasks
             isEditing={isEditing}
             setIsEditing={setIsEditing}

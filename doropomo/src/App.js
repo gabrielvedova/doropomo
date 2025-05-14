@@ -6,15 +6,15 @@ import background from "../assets/BackgroundDoropomo.png";
 
 export default function App() {
   return (
-    <TimerProvider>
-      <ImageBackground
+      /*<ImageBackground
         source={background}
         resizeMode="cover"
         style={styles.container}
       >
+      </ImageBackground>*/
+    <TimerProvider>
         <StackNavigation />
         <StatusBar style="auto" />
-      </ImageBackground>
     </TimerProvider>
   );
 }
