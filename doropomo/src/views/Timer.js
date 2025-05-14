@@ -4,18 +4,18 @@ import { TimerContext } from "../context/TimerContext";
 import Intervals from "../components/timer/Intervals";
 import colors from "../colors.json";
 
-export default (props) => {
+export default ({ showButton = true }) => {
   const { isRunning, setIsRunning } = useContext(TimerContext);
 
   return (
     <View style={styles.container}>
       <Intervals isRunning={isRunning} />
-      <TouchableOpacity
+      {showButton && (<TouchableOpacity
         onPress={() => setIsRunning(!isRunning)}
         style={styles.button}
       >
         <Text style={styles.buttonText}>{isRunning ? "Pause" : "Start"}</Text>
-      </TouchableOpacity>
+      </TouchableOpacity>)}
     </View>
   );
 };

@@ -12,7 +12,7 @@ import colors from "../colors.json";
 export default (props) => {
   return (
     <SafeAreaView style={styles.container}>
-      <Timer />
+      <Timer showButton={false}/>
       <Tasks showButton={false} />
     </SafeAreaView>
   );
