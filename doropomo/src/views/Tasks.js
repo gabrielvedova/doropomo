@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   StyleSheet,
   SafeAreaView,
@@ -9,6 +9,7 @@ import {
   Image,
   ImageBackground,
 } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import uuid from "react-native-uuid";
 import ListTasks from "../components/tasks/ListTasks";
@@ -26,21 +27,22 @@ export default ({ showButton = true, showImage = true }) => {
   });
 
   // Carregar tarefas do AsyncStorage ao montar o componente
-  useEffect(() => {
-    const loadTasks = async () => {
-      try {
-        AsyncStorage.clear(); // Limpa o AsyncStorage para testes
-        const storedTasks = await AsyncStorage.getItem("tasks");
-        console.log("Tarefas carregadas do AsyncStorage:", storedTasks);
-        if (storedTasks) {
-          setListTasks(JSON.parse(storedTasks));
+  useFocusEffect(
+    useCallback(() => {
+      // Coloque aqui o que você quer "refrescar" ao entrar na tela
+      const loadTasks = async () => {
+        try {
+          const storedTasks = await AsyncStorage.getItem("tasks");
+          if (storedTasks) {
+            setListTasks(JSON.parse(storedTasks));
+          }
+        } catch (e) {
+          console.error("Erro ao carregar tarefas:", e);
         }
-      } catch (e) {
-        console.error("Erro ao carregar tarefas:", e);
-      }
-    };
-    loadTasks();
-  }, []);
+      };
+      loadTasks();
+    }, [])
+  );
 
   // Salvar tarefas no AsyncStorage sempre que a lista for alterada
   useEffect(() => {
