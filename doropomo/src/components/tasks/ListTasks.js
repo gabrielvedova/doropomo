@@ -93,7 +93,7 @@ export default ({
             data={listTasks}
             keyExtractor={(item) => item.id.toString()}
             contentContainerStyle={{
-              width: "100%",
+              width: 300,
               alignItems: "center",
               justifyContent: "center",
             }}
@@ -150,6 +150,8 @@ export default ({
               <View
                 style={{
                   width: "100%",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
                 <Text>Nenhuma tarefa disponível!</Text>
@@ -172,7 +174,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: "#C4C0C088",
     padding: 10,
-    minHeight: "80%",
+    minHeight: "60%",
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
