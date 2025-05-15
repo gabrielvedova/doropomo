@@ -19,16 +19,24 @@ export default ({
   showButton,
 }) => {
   const [editingTask, setEditingTask] = useState(null);
-  const [newTitle, setNewTitle] = useState("");
+  const [newTask, setNewTask] = useState({
+    title: "",
+    weight: null,
+  });
 
   const editTask = (id) => {
     setListTasks((prevTasks) =>
       prevTasks.map((task) =>
-        task.id === id ? { ...task, title: newTitle } : task
+        task.id === id
+          ? { ...task, title: newTask.title, weight: newTask.weight }
+          : task
       )
     );
     setEditingTask(null); // Finaliza o modo de edição
-    setNewTitle(""); // Limpa o campo de entrada
+    setNewTask({
+      title: "",
+      weight: null,
+    }); // Limpa o campo de entrada
   };
 
   const deleteTask = (id) => {
@@ -43,9 +51,16 @@ export default ({
         <View>
           <TextInput
             style={styles.input}
-            value={newTitle}
-            onChangeText={setNewTitle}
+            value={newTask.title}
+            onChangeText={(text) => setNewTask({ ...newTask, title: text })}
             placeholder="Edit task title"
+          />
+          <TextInput
+            style={styles.input}
+            value={newTask.weight}
+            onChangeText={(text) => setNewTask({ ...newTask, weight: text })}
+            placeholder="Edit task weight"
+            keyboardType="numeric"
           />
           <TouchableOpacity
             onPress={() => {
@@ -58,7 +73,7 @@ export default ({
           <TouchableOpacity
             onPress={() => {
               setIsEditing(false);
-              setNewTitle("");
+              setNewTask("");
             }}
           >
             <Text>Cancel</Text>

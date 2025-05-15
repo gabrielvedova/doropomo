@@ -20,7 +20,10 @@ export default ({ showButton = true, showImage = true }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [listTasks, setListTasks] = useState([]);
   const [isNewTask, setIsNewTask] = useState(false);
-  const [newTaskTitle, setNewTaskTitle] = useState("");
+  const [newTask, setNewTask] = useState({
+    title: "",
+    weight: null,
+  });
 
   // Carregar tarefas do AsyncStorage ao montar o componente
   useEffect(() => {
@@ -50,15 +53,17 @@ export default ({ showButton = true, showImage = true }) => {
   }, [listTasks]);
 
   const addNewTask = () => {
-    if (newTaskTitle.trim() === "") return; // Evita adicionar tarefas vazias
-    const newTask = {
+    if (newTask.title.trim() === "") return; // Evita adicionar tarefas vazias
+    const task = {
       id: uuid.v4(), // Gera um novo ID
-      title: newTaskTitle,
+      title: newTask.title,
+      weight: newTask.weight,
       completed: false,
     };
-    setListTasks([...listTasks, newTask]); // Adiciona a nova tarefa à lista
-    setNewTaskTitle(""); // Limpa o campo de entrada
+    setListTasks([...listTasks, task]); // Adiciona a nova tarefa à lista
+    setNewTask({ title: "", weight: null }); // Limpa o campo de entrada
     setIsNewTask(false); // Volta para a lista de tarefas
+    console.log("Tarefa adicionada:", task);
   };
 
   return (
@@ -73,9 +78,25 @@ export default ({ showButton = true, showImage = true }) => {
           <View style={styles.newTaskContainer}>
             <TextInput
               style={styles.input}
-              placeholder="Enter task title"
-              value={newTaskTitle}
-              onChangeText={setNewTaskTitle}
+              placeholder="Tarefa"
+              value={newTask.title}
+              onChangeText={(text) =>
+                setNewTask({
+                  ...newTask,
+                  title: text,
+                })
+              }
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Peso da tarefa (1 a 4)"
+              value={newTask.weight}
+              onChangeText={(text) =>
+                setNewTask({
+                  ...newTask,
+                  weight: parseInt(text) || 1,
+                })
+              }
             />
             <TouchableOpacity onPress={addNewTask} style={styles.addButton}>
               <Text style={styles.addButtonText}>Add Task</Text>
