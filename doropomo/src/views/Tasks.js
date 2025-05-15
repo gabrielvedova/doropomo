@@ -7,14 +7,16 @@ import {
   View,
   TextInput,
   Image,
+  ImageBackground,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import uuid from "react-native-uuid";
 import ListTasks from "../components/tasks/ListTasks";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import colors from "../colors.json";
+import background from "../../assets/BackgroundDoropomo.png";
 
-export default ({ showButton = true, showImage= true }) => {
+export default ({ showButton = true, showImage = true }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [listTasks, setListTasks] = useState([]);
   const [isNewTask, setIsNewTask] = useState(false);
@@ -60,52 +62,61 @@ export default ({ showButton = true, showImage= true }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      {isNewTask ? (
-        <View style={styles.newTaskContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter task title"
-            value={newTaskTitle}
-            onChangeText={setNewTaskTitle}
-          />
-          <TouchableOpacity onPress={addNewTask} style={styles.addButton}>
-            <Text style={styles.addButtonText}>Add Task</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => setIsNewTask(false)}
-            style={styles.cancelButton}
-          >
-            <Text style={styles.cancelButtonText}>Cancel</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <>
-        {showImage && <Image
-            source={require("../../assets/doropomoLogo.png")}
-            style={{ marginTop: 20, height: 256, width: 256 }} // ajuste os valores conforme desejar
-            resizeMode="contain"
-          />}
-          <ListTasks
-            isEditing={isEditing}
-            setIsEditing={setIsEditing}
-            listTasks={listTasks}
-            setListTasks={setListTasks}
-            showButton={showButton}
-          />
-          {showButton && !isEditing && (
-            <TouchableOpacity
-              onPress={() => {
-                setIsNewTask(true);
-              }}
-              style={styles.buttonAddTaskContainer}
-            >
-              <Ionicons name="add-circle" size={92} color="black" />
+    <ImageBackground
+      source={background}
+      resizeMode="cover"
+      style={styles.container}
+      imageStyle={{ opacity: 0.5 }}
+    >
+      <SafeAreaView style={styles.container}>
+        {isNewTask ? (
+          <View style={styles.newTaskContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter task title"
+              value={newTaskTitle}
+              onChangeText={setNewTaskTitle}
+            />
+            <TouchableOpacity onPress={addNewTask} style={styles.addButton}>
+              <Text style={styles.addButtonText}>Add Task</Text>
             </TouchableOpacity>
-          )}
-        </>
-      )}
-    </SafeAreaView>
+            <TouchableOpacity
+              onPress={() => setIsNewTask(false)}
+              style={styles.cancelButton}
+            >
+              <Text style={styles.cancelButtonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <>
+            {showImage && (
+              <Image
+                source={require("../../assets/doropomoLogo.png")}
+                style={{ marginTop: 20, height: 256, width: 256 }} // ajuste os valores conforme desejar
+                resizeMode="contain"
+              />
+            )}
+            <ListTasks
+              isEditing={isEditing}
+              setIsEditing={setIsEditing}
+              listTasks={listTasks}
+              setListTasks={setListTasks}
+              showButton={showButton}
+            />
+            {showButton && !isEditing && (
+              <TouchableOpacity
+                onPress={() => {
+                  setIsNewTask(true);
+                }}
+                style={styles.buttonAddTaskContainer}
+              >
+                <Ionicons name="add-circle" size={92} color="black" />
+              </TouchableOpacity>
+            )}
+          </>
+        )}
+      </SafeAreaView>
+    </ImageBackground>
   );
 };
 
@@ -114,7 +125,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colors.background,
   },
   buttonAddTaskContainer: {
     position: "absolute",

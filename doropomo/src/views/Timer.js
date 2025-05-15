@@ -10,12 +10,14 @@ export default ({ showButton = true }) => {
   return (
     <View style={styles.container}>
       <Intervals isRunning={isRunning} />
-      {showButton && (<TouchableOpacity
-        onPress={() => setIsRunning(!isRunning)}
-        style={styles.button}
-      >
-        <Text style={styles.buttonText}>{isRunning ? "Pause" : "Start"}</Text>
-      </TouchableOpacity>)}
+      {showButton && (
+        <TouchableOpacity
+          onPress={() => setIsRunning(!isRunning)}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>{isRunning ? "Pause" : "Start"}</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -26,7 +28,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    backgroundColor: colors.background,
   },
   button: {
     padding: 10,
