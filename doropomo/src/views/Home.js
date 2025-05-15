@@ -17,7 +17,7 @@ export default (props) => {
       source={background}
       resizeMode="cover"
       style={styles.background}
-      imageStyle={{ opacity: 0.5 }}
+      imageStyle={{ opacity: 0.7 }}
     >
       <SafeAreaView style={styles.container}>
         <Timer showButton={false} />

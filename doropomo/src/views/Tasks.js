@@ -75,7 +75,7 @@ export default ({ showButton = true, showImage = true }) => {
       source={background}
       resizeMode="cover"
       style={styles.container}
-      imageStyle={{ opacity: 0.5 }}
+      imageStyle={{ opacity: showImage ? 0.7 : 0 }} // Ajusta a opacidade da imagem de fundo
     >
       <SafeAreaView style={styles.container}>
         {isNewTask ? (
@@ -199,6 +199,7 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
     padding: 10,
     borderRadius: 5,
+    marginBottom: 10,
   },
   cancelButtonText: {
     color: "white",
