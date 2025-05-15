@@ -48,36 +48,44 @@ export default ({
       style={[styles.container, { paddingTop: showButton ? 50 : 10 }]}
     >
       {isEditing ? (
-        <View>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
           <TextInput
             style={styles.input}
             value={newTask.title}
             onChangeText={(text) => setNewTask({ ...newTask, title: text })}
-            placeholder="Edit task title"
+            placeholder="Insira o novo título da tarefa"
           />
           <TextInput
             style={styles.input}
             value={newTask.weight}
             onChangeText={(text) => setNewTask({ ...newTask, weight: text })}
-            placeholder="Edit task weight"
+            placeholder="Insira o novo peso da tarefa (1 a 4)"
             keyboardType="numeric"
           />
-          <TouchableOpacity
-            onPress={() => {
-              editTask(editingTask);
-              setIsEditing(false);
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              width: "60%",
             }}
           >
-            <Text>Save</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              setIsEditing(false);
-              setNewTask("");
-            }}
-          >
-            <Text>Cancel</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                editTask(editingTask);
+                setIsEditing(false);
+              }}
+            >
+              <Text>Save</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setIsEditing(false);
+                setNewTask("");
+              }}
+            >
+              <Text>Cancel</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       ) : (
         <View style={styles.listContainer}>
@@ -139,8 +147,12 @@ export default ({
               </View>
             )}
             ListEmptyComponent={() => (
-              <View>
-                <Text>No tasks available</Text>
+              <View
+                style={{
+                  width: "100%",
+                }}
+              >
+                <Text>Nenhuma tarefa disponível!</Text>
               </View>
             )}
           />
@@ -153,6 +165,7 @@ export default ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: "100%",
   },
   listContainer: {
     width: "100%",
@@ -178,8 +191,8 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: "gray",
-    padding: 5,
-    marginBottom: 5,
-    width: 200,
+    padding: 10,
+    marginBottom: 10,
+    width: 300,
   },
 });

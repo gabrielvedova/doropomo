@@ -29,7 +29,9 @@ export default ({ showButton = true, showImage = true }) => {
   useEffect(() => {
     const loadTasks = async () => {
       try {
+        AsyncStorage.clear(); // Limpa o AsyncStorage para testes
         const storedTasks = await AsyncStorage.getItem("tasks");
+        console.log("Tarefas carregadas do AsyncStorage:", storedTasks);
         if (storedTasks) {
           setListTasks(JSON.parse(storedTasks));
         }
@@ -86,11 +88,13 @@ export default ({ showButton = true, showImage = true }) => {
                   title: text,
                 })
               }
+              scrollEnabled={true}
             />
             <TextInput
               style={styles.input}
               placeholder="Peso da tarefa (1 a 4)"
               value={newTask.weight}
+              keyboardType="numeric"
               onChangeText={(text) =>
                 setNewTask({
                   ...newTask,
@@ -98,15 +102,23 @@ export default ({ showButton = true, showImage = true }) => {
                 })
               }
             />
-            <TouchableOpacity onPress={addNewTask} style={styles.addButton}>
-              <Text style={styles.addButtonText}>Add Task</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setIsNewTask(false)}
-              style={styles.cancelButton}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                width: "60%",
+              }}
             >
-              <Text style={styles.cancelButtonText}>Cancel</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setIsNewTask(false)}
+                style={styles.cancelButton}
+              >
+                <Text style={styles.cancelButtonText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={addNewTask} style={styles.addButton}>
+                <Text style={styles.addButtonText}>Add Task</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         ) : (
           <>
@@ -142,6 +154,12 @@ export default ({ showButton = true, showImage = true }) => {
 };
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors.background,
+  },
   container: {
     flex: 1,
     justifyContent: "center",
@@ -163,7 +181,7 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     padding: 10,
     marginBottom: 10,
-    width: "80%",
+    width: 300,
   },
   addButton: {
     backgroundColor: "green",
