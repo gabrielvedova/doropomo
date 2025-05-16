@@ -3,6 +3,7 @@ import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { TimerContext } from "../context/TimerContext";
 import Intervals from "../components/timer/Intervals";
 import colors from "../colors.json";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default ({ showButton = true }) => {
   const { isRunning, setIsRunning } = useContext(TimerContext);
@@ -11,11 +12,12 @@ export default ({ showButton = true }) => {
     <View style={styles.container}>
       <Intervals isRunning={isRunning} />
       {showButton && (
-        <TouchableOpacity
-          onPress={() => setIsRunning(!isRunning)}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>{isRunning ? "Pause" : "Start"}</Text>
+        <TouchableOpacity onPress={() => setIsRunning(!isRunning)}>
+          <Ionicons
+            name={isRunning ? "pause-circle" : "play-circle"}
+            size={52}
+            color="#000"
+          />
         </TouchableOpacity>
       )}
     </View>
@@ -28,11 +30,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-  },
-  button: {
-    padding: 10,
-    backgroundColor: "#007BFF",
-    borderRadius: 5,
+    backgroundColor: colors.background,
   },
   buttonText: {
     color: "#fff",
