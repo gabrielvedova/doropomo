@@ -9,10 +9,13 @@ import {
   Image,
   ImageBackground,
 } from "react-native";
+import ListTasks from "../components/tasks/ListTasks";
+
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import uuid from "react-native-uuid";
-import ListTasks from "../components/tasks/ListTasks";
+import { Picker } from "@react-native-picker/picker";
+
 import Ionicons from "@expo/vector-icons/Ionicons";
 import colors from "../colors.json";
 import background from "../../assets/BackgroundDoropomo.png";
@@ -22,8 +25,12 @@ export default ({ showButton = true, showImage = true }) => {
   const [listTasks, setListTasks] = useState([]);
   const [isNewTask, setIsNewTask] = useState(false);
   const [newTask, setNewTask] = useState({
+    id: null,
     title: "",
     weight: null,
+    completed: false,
+    DayWeek: "",
+    timeToDo: 0,
   });
 
   // Carregar tarefas do AsyncStorage ao montar o componente
@@ -65,7 +72,7 @@ export default ({ showButton = true, showImage = true }) => {
       completed: false,
     };
     setListTasks([...listTasks, task]); // Adiciona a nova tarefa à lista
-    setNewTask({ title: "", weight: null }); // Limpa o campo de entrada
+    setNewTask({ title: "", weight: null, DayWeek: "", timeToDo: 0 }); // Limpa o campo de entrada
     setIsNewTask(false); // Volta para a lista de tarefas
     console.log("Tarefa adicionada:", task);
   };
@@ -104,6 +111,53 @@ export default ({ showButton = true, showImage = true }) => {
                 })
               }
             />
+            <TextInput
+              style={styles.input}
+              placeholder="Tempo para fazer (em minutos)"
+              value={newTask.timeToDo}
+              keyboardType="numeric"
+              onChangeText={(text) =>
+                setNewTask({
+                  ...newTask,
+                  timeToDo: parseInt(text) || 0,
+                })
+              }
+            />
+            <View
+              style={[
+                styles.input,
+                {
+                  height: 50,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: 0,
+                  margin: 0,
+                },
+              ]}
+            >
+              <Picker
+                selectedValue={newTask.DayWeek}
+                style={{
+                  width: "100%",
+                  backgroundColor: "transparent",
+                }}
+                onValueChange={(itemValue) => {
+                  setNewTask({
+                    ...newTask,
+                    DayWeek: itemValue,
+                  });
+                }}
+              >
+                <Picker.Item label="Selecione o dia da semana" value="" />
+                <Picker.Item label="Domingo" value="Domingo" />
+                <Picker.Item label="Segunda" value="Segunda" />
+                <Picker.Item label="Terça" value="Terça" />
+                <Picker.Item label="Quarta" value="Quarta" />
+                <Picker.Item label="Quinta" value="Quinta" />
+                <Picker.Item label="Sexta" value="Sexta" />
+                <Picker.Item label="Sábado" value="Sábado" />
+              </Picker>
+            </View>
             <View
               style={{
                 flexDirection: "row",
@@ -170,7 +224,7 @@ const styles = StyleSheet.create({
   buttonAddTaskContainer: {
     position: "absolute",
     bottom: 20,
-    right: 20,
+    right: -20,
     zIndex: 10,
   },
   newTaskContainer: {
@@ -184,6 +238,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
     width: 300,
+    backgroundColor: "#ffffffb3",
   },
   addButton: {
     backgroundColor: "green",

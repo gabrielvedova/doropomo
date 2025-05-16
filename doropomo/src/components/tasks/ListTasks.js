@@ -10,6 +10,7 @@ import {
 } from "react-native";
 
 import Fontisto from "@expo/vector-icons/Fontisto";
+import { Picker } from "@react-native-picker/picker";
 
 export default ({
   isEditing,
@@ -20,15 +21,25 @@ export default ({
 }) => {
   const [editingTask, setEditingTask] = useState(null);
   const [newTask, setNewTask] = useState({
+    id: null,
     title: "",
     weight: null,
+    completed: false,
+    DayWeek: "",
+    timeToDo: 0,
   });
 
   const editTask = (id) => {
     setListTasks((prevTasks) =>
       prevTasks.map((task) =>
         task.id === id
-          ? { ...task, title: newTask.title, weight: newTask.weight }
+          ? {
+              ...task,
+              title: newTask.title,
+              weight: newTask.weight,
+              timeToDo: newTask.timeToDo,
+              DayWeek: newTask.DayWeek,
+            }
           : task
       )
     );
@@ -36,6 +47,8 @@ export default ({
     setNewTask({
       title: "",
       weight: null,
+      DayWeek: "",
+      timeToDo: 0,
     }); // Limpa o campo de entrada
   };
 
@@ -62,6 +75,48 @@ export default ({
             placeholder="Insira o novo peso da tarefa (1 a 4)"
             keyboardType="numeric"
           />
+          <TextInput
+            style={styles.input}
+            value={newTask.timeToDo}
+            onChangeText={(text) => setNewTask({ ...newTask, timeToDo: text })}
+            placeholder="Insira o novo tempo para fazer (em minutos)"
+            keyboardType="numeric"
+          />
+          <View
+            style={[
+              styles.input,
+              {
+                height: 50,
+                alignItems: "center",
+                justifyContent: "center",
+                padding: 0,
+                margin: 0,
+              },
+            ]}
+          >
+            <Picker
+              selectedValue={newTask.DayWeek}
+              style={{
+                width: "100%",
+                backgroundColor: "transparent",
+              }}
+              onValueChange={(itemValue) => {
+                setNewTask({
+                  ...newTask,
+                  DayWeek: itemValue,
+                });
+              }}
+            >
+              <Picker.Item label="Selecione o dia da semana" value="" />
+              <Picker.Item label="Domingo" value="Domingo" />
+              <Picker.Item label="Segunda" value="Segunda" />
+              <Picker.Item label="Terça" value="Terça" />
+              <Picker.Item label="Quarta" value="Quarta" />
+              <Picker.Item label="Quinta" value="Quinta" />
+              <Picker.Item label="Sexta" value="Sexta" />
+              <Picker.Item label="Sábado" value="Sábado" />
+            </Picker>
+          </View>
           <View
             style={{
               flexDirection: "row",
@@ -196,5 +251,6 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
     width: 300,
+    backgroundColor: "#ffffffb3",
   },
 });
