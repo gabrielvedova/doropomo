@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { TimerContext } from "../context/TimerContext";
 import Intervals from "../components/timer/Intervals";
@@ -7,7 +7,8 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default ({ showButton = true }) => {
   const { isRunning, setIsRunning } = useContext(TimerContext);
-
+  const [nextCurrent, setNextCurrent] = useState("Intervalo Curto");
+  console.log("Próximo intervalo: ", nextCurrent);
   return (
     <View
       style={[
@@ -15,15 +16,32 @@ export default ({ showButton = true }) => {
         { backgroundColor: showButton && colors.background },
       ]}
     >
-      <Intervals isRunning={isRunning} />
+      <Intervals
+        isRunning={isRunning}
+        setIsRunning={setIsRunning}
+        setNextCurrent={setNextCurrent}
+      />
       {showButton && (
-        <TouchableOpacity onPress={() => setIsRunning(!isRunning)}>
-          <Ionicons
-            name={isRunning ? "pause-circle" : "play-circle"}
-            size={52}
-            color="#000"
-          />
-        </TouchableOpacity>
+        <>
+          <View
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text>Próximo intervalo:</Text>
+            <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+              {nextCurrent}
+            </Text>
+          </View>
+          <TouchableOpacity onPress={() => setIsRunning(!isRunning)}>
+            <Ionicons
+              name={isRunning ? "pause-circle" : "play-circle"}
+              size={52}
+              color="#000"
+            />
+          </TouchableOpacity>
+        </>
       )}
     </View>
   );

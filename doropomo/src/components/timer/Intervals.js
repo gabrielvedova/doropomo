@@ -10,6 +10,8 @@ export default ({
   shortBreak = 300,
   longBreak = 900,
   isRunning,
+  setIsRunning,
+  setNextCurrent,
 }) => {
   const totalIntervals = Math.floor(cycleTime * 2 * totalCycles); // Total de intervalos de estudo e pausa
 
@@ -69,14 +71,21 @@ export default ({
                 const updatedStudyTime = totalStudyTime + study;
                 setTotalStudyTime(updatedStudyTime);
                 saveStudyTime(updatedStudyTime);
+                setNextCurrent(
+                  nextInterval + (1 % 2) !== 0 && qntdIntervals < 3
+                    ? "Intervalo Curto"
+                    : "Intervalo Longo"
+                );
               } else if (nextInterval % 2 !== 0 && qntdIntervals < 3) {
                 setCurrentType("shortBreak");
                 setTimerDuration(shortBreak);
                 setQntdIntervals(qntdIntervals + 1);
+                setNextCurrent("Estudo");
               } else if (nextInterval % 2 !== 0 && qntdIntervals >= 3) {
                 setCurrentType("longBreak");
                 setTimerDuration(longBreak);
                 setQntdIntervals(0);
+                setNextCurrent("Estudo");
               }
             } else {
               setCurrentType("done");
