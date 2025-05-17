@@ -6,9 +6,9 @@ import Stopwatch from "./Stopwatch";
 export default ({
   totalCycles = 1,
   cycleTime = 4,
-  study = 1500,
-  shortBreak = 300,
-  longBreak = 900,
+  study = 15,
+  shortBreak = 3,
+  longBreak = 9,
   isRunning,
   setIsRunning,
   setNextCurrent,
@@ -53,7 +53,7 @@ export default ({
         {
           text: "Não",
           onPress: () => {
-            setIsTimerRunning(false);
+            setIsRunning(false);
           },
           style: "cancel",
         },
@@ -71,25 +71,31 @@ export default ({
                 const updatedStudyTime = totalStudyTime + study;
                 setTotalStudyTime(updatedStudyTime);
                 saveStudyTime(updatedStudyTime);
-                setNextCurrent(
-                  nextInterval + (1 % 2) !== 0 && qntdIntervals < 3
-                    ? "Intervalo Curto"
-                    : "Intervalo Longo"
-                );
-              } else if (nextInterval % 2 !== 0 && qntdIntervals < 3) {
-                setCurrentType("shortBreak");
-                setTimerDuration(shortBreak);
-                setQntdIntervals(qntdIntervals + 1);
-                setNextCurrent("Estudo");
-              } else if (nextInterval % 2 !== 0 && qntdIntervals >= 3) {
-                setCurrentType("longBreak");
-                setTimerDuration(longBreak);
-                setQntdIntervals(0);
-                setNextCurrent("Estudo");
+                if (qntdIntervals < 3) {
+                  setNextCurrent("Intervalo Curto");
+                } else {
+                  setNextCurrent("Intervalo Longo");
+                }
+              } else {
+                // Se for ímpar, é intervalo
+                if (qntdIntervals < 3) {
+                  setCurrentType("shortBreak");
+                  setTimerDuration(shortBreak);
+                  setQntdIntervals(qntdIntervals + 1);
+                  setNextCurrent("Estudo");
+                } else {
+                  setCurrentType("longBreak");
+                  setTimerDuration(longBreak);
+                  setQntdIntervals(0);
+                  setNextCurrent("Estudo");
+                }
               }
             } else {
-              setCurrentType("done");
-              setTimerDuration(0);
+              setCurrentType("study");
+              setCurrentInterval(0);
+              setQntdIntervals(0);
+              setTimerDuration(study);
+              setNextCurrent("Intervalo Curto");
             }
           },
         },
@@ -109,7 +115,7 @@ export default ({
             onTimerEnd={handleTimerEnd}
             isRunning={isRunning}
           />
-          <Text>
+          <Text style={{ fontSize: 16, fontWeight: "bold" }}>
             {currentType === "study"
               ? "Estudo"
               : currentType === "shortBreak"
@@ -136,7 +142,7 @@ const styles = StyleSheet.create({
     width: circleSize,
     borderRadius: circleSize / 2,
     borderColor: "#000",
-    borderWidth: 1,
+    borderWidth: 8,
     margin: 10,
   },
   studyTimeText: {

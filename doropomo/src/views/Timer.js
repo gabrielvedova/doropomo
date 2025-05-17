@@ -1,5 +1,11 @@
 import React, { useContext, useState } from "react";
-import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  ImageBackground,
+} from "react-native";
 import { TimerContext } from "../context/TimerContext";
 import Intervals from "../components/timer/Intervals";
 import colors from "../colors.json";
@@ -10,40 +16,42 @@ export default ({ showButton = true }) => {
   const [nextCurrent, setNextCurrent] = useState("Intervalo Curto");
   console.log("Próximo intervalo: ", nextCurrent);
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: showButton && colors.background },
-      ]}
+    <ImageBackground
+      source={require("../../assets/BackgroundDoropomo.png")}
+      style={{ flex: 1, width: "100%", height: "100%" }}
+      resizeMode="cover"
+      imageStyle={{ opacity: 0.7 }}
     >
-      <Intervals
-        isRunning={isRunning}
-        setIsRunning={setIsRunning}
-        setNextCurrent={setNextCurrent}
-      />
-      {showButton && (
-        <>
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Text>Próximo intervalo:</Text>
-            <Text style={{ fontWeight: "bold", fontSize: 20 }}>
-              {nextCurrent}
-            </Text>
-          </View>
-          <TouchableOpacity onPress={() => setIsRunning(!isRunning)}>
-            <Ionicons
-              name={isRunning ? "pause-circle" : "play-circle"}
-              size={52}
-              color="#000"
-            />
-          </TouchableOpacity>
-        </>
-      )}
-    </View>
+      <View style={[styles.container]}>
+        <Intervals
+          isRunning={isRunning}
+          setIsRunning={setIsRunning}
+          setNextCurrent={setNextCurrent}
+        />
+        {showButton && (
+          <>
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text>Próximo intervalo:</Text>
+              <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+                {nextCurrent}
+              </Text>
+            </View>
+            <TouchableOpacity onPress={() => setIsRunning(!isRunning)}>
+              <Ionicons
+                name={isRunning ? "pause-circle" : "play-circle"}
+                size={52}
+                color="#000"
+              />
+            </TouchableOpacity>
+          </>
+        )}
+      </View>
+    </ImageBackground>
   );
 };
 
