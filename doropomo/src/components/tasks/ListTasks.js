@@ -126,19 +126,31 @@ export default ({
           >
             <TouchableOpacity
               onPress={() => {
-                editTask(editingTask);
-                setIsEditing(false);
-              }}
-            >
-              <Text>Save</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
                 setIsEditing(false);
                 setNewTask("");
               }}
+              style={{
+                backgroundColor: "red",
+                padding: 10,
+                borderRadius: 5,
+                marginBottom: 10,
+              }}
             >
-              <Text>Cancel</Text>
+              <Text style={{ color: "#fff" }}>Cancel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                editTask(editingTask);
+                setIsEditing(false);
+              }}
+              style={{
+                backgroundColor: "green",
+                padding: 10,
+                borderRadius: 5,
+                marginBottom: 10,
+              }}
+            >
+              <Text style={{ color: "#fff" }}>Save</Text>
             </TouchableOpacity>
           </View>
         </View>

@@ -9,7 +9,12 @@ export default ({ showButton = true }) => {
   const { isRunning, setIsRunning } = useContext(TimerContext);
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: showButton && colors.background },
+      ]}
+    >
       <Intervals isRunning={isRunning} />
       {showButton && (
         <TouchableOpacity onPress={() => setIsRunning(!isRunning)}>
@@ -30,7 +35,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    backgroundColor: colors.background,
   },
   buttonText: {
     color: "#fff",
