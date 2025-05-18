@@ -1,12 +1,10 @@
 # doropomo
 
-## Visão Geral
+O **Doropomo** é um aplicativo de produtividade focado na técnica Pomodoro, desenvolvido em React Native utilizando Expo. O objetivo do app é ajudar o usuário a organizar suas tarefas e ciclos de estudo, alternando entre períodos de foco e intervalos, além de permitir o gerenciamento eficiente de tarefas diárias.
 
-**Doropomo** é um aplicativo de produtividade baseado na técnica Pomodoro, desenvolvido em React Native com Expo. Ele permite ao usuário gerenciar tarefas e controlar ciclos de estudo e intervalos, promovendo foco e organização.
+## Estrutura e Funcionamento Geral
 
----
-
-## Estrutura do Projeto
+O projeto está organizado em uma estrutura clara, separando arquivos de configuração, assets, componentes reutilizáveis, contexto global, navegação e as telas principais do app. O ponto de entrada é o arquivo `index.js`, que registra o componente principal da aplicação. O componente raiz, definido em `App.js`, envolve toda a aplicação com o `TimerProvider`, responsável por fornecer o contexto global do timer, e renderiza a navegação principal através do `StackNavigation`.
 
 ```
 doropomo/
@@ -40,209 +38,67 @@ doropomo/
 
 ---
 
-## Descrição dos Arquivos e Funcionalidades
-
-### Arquivos de Configuração
-
-- **.gitignore**  
-  Arquivos e pastas ignorados pelo Git (ex: `node_modules`, arquivos temporários, builds).
-
-- **app.json**  
-  Configurações do Expo, como nome, ícone, splash, e opções de build para Android/iOS/Web.
-
-- **babel.config.js**  
-  Configuração do Babel para transpilar o código JavaScript, incluindo suporte ao React Native Reanimated.
-
-- **package.json**  
-  Lista dependências, scripts de inicialização (`npm start`, `npm run android`, etc.) e metadados do projeto.
-
-- **index.js**  
-  Ponto de entrada do app. Registra o componente principal usando Expo.
-
----
-
-### Pasta `assets/`
-
-Imagens utilizadas no app, como o fundo e o logo.
-
----
-
-### Pasta `src/`
-
-#### App.js
-
-- Componente raiz do app.
-- Envolve toda a aplicação com o `TimerProvider` para fornecer contexto global do timer.
-- Renderiza a navegação principal (`StackNavigation`).
-
----
-
-### Contexto
-
-#### context/TimerContext.js
-
-- Cria o contexto global `TimerContext` para controlar o estado do timer (`isRunning`, `setIsRunning`).
-- Permite que diferentes componentes acessem e modifiquem o estado do timer.
-- Exemplo de uso:
-  - `const { isRunning, setIsRunning } = useContext(TimerContext);`
-
----
-
 ### Navegação
 
-#### navigation/StackNavigation.js
+A navegação do app é composta por duas camadas: uma navegação em pilha (stack) e uma navegação por abas (tabs). O arquivo `StackNavigation.js` define as rotas principais do app, incluindo a tela inicial (Pomodoro), Home, Timer e Tasks. A tela inicial utiliza o componente `TabNavigation`, que organiza as três principais telas do app (Home, Timer e Tasks) em abas na parte inferior da tela, cada uma com seu ícone personalizado. O cabeçalho e os labels das abas são ocultados para uma interface mais limpa.
 
-- Define a navegação em pilha (stack) do app.
-- Telas principais: Pomodoro (tabs), Home, Timer e Tasks.
-- Usa o componente `TabNavigation` como tela inicial.
+### Contexto Global
 
-#### navigation/TabNavigation.js
+O contexto global do timer é implementado em `TimerContext.js`. Ele utiliza a Context API do React para compartilhar o estado de execução do timer (`isRunning`) entre diferentes componentes da aplicação. Isso permite que o timer seja controlado de qualquer parte do app, garantindo uma experiência consistente para o usuário.
 
-- Define a navegação por abas (tabs) entre as telas Home, Timer e Tasks.
-- Usa ícones personalizados para cada aba.
-- Esconde o header e os labels das abas.
+### Paleta de Cores e Assets
 
----
+As cores principais do app estão definidas em `colors.json`, facilitando a manutenção e a padronização visual. As imagens utilizadas, como o fundo e o logo, ficam na pasta `assets`.
 
-### Paleta de Cores
+## Componentes
 
-#### colors.json
+O app possui componentes reutilizáveis organizados em subpastas dentro de `src/components`. Os principais são:
 
-- Define as cores principais do app, como fundo, texto, vermelho e verde.
+- **ListTasks.js**: Responsável por exibir a lista de tarefas do usuário. Permite marcar tarefas como concluídas, editar e excluir tarefas. Utiliza o componente `FlatList` para renderização eficiente e o `Picker` para seleção do dia da semana ao editar uma tarefa. As funções principais são:
 
----
+  - `editTask`: Atualiza os dados de uma tarefa específica, permitindo ao usuário modificar título, peso, tempo estimado e dia da semana.
+  - `deleteTask`: Remove uma tarefa da lista.
+  - Renderização condicional: Alterna entre o modo de edição e visualização das tarefas.
 
-### Componentes
+- **Intervals.js**: Gerencia os ciclos do Pomodoro, alternando entre períodos de estudo, intervalos curtos e intervalos longos. Utiliza o componente `Stopwatch` para controlar o tempo regressivo de cada ciclo. As principais funções são:
 
-#### components/tasks/ListTasks.js
+  - `handleTimerEnd`: Exibe um alerta ao final de cada ciclo, perguntando ao usuário se deseja iniciar outro temporizador. Se sim, avança para o próximo ciclo; se não, reinicia o estado do timer.
+  - `saveStudyTime` e `loadStudyTime`: Salvam e carregam o tempo total de estudo do usuário utilizando o AsyncStorage.
+  - Controle de fluxo: Alterna automaticamente entre estudo, intervalo curto e intervalo longo, atualizando o estado e o próximo ciclo a ser exibido.
 
-- Exibe a lista de tarefas.
-- Permite marcar tarefas como concluídas, editar e excluir.
-- Utiliza `FlatList` para renderização eficiente.
-- Principais funções:
-  - **editTask**: Atualiza os dados de uma tarefa.
-  - **deleteTask**: Remove uma tarefa da lista.
-  - Renderização condicional para modo de edição ou visualização.
-  - Usa o componente `Picker` para selecionar o dia da semana ao editar.
+- **Stopwatch.js**: Implementa o temporizador regressivo. Recebe o tempo inicial, decrementa a cada segundo enquanto o timer está rodando e notifica o componente pai ao chegar a zero. As funções principais são:
+  - `useEffect`: Controla o ciclo de decremento do tempo e chama a função de término (`onTimerEnd`) quando o tempo chega a zero.
+  - `formatTime`: Formata o tempo restante em minutos e segundos para exibição amigável ao usuário.
 
-#### components/timer/Intervals.js
+## Telas (Views)
 
-- Gerencia os ciclos de estudo e intervalos (curto e longo) do Pomodoro.
-- Controla o tipo de intervalo, duração, e exibe alertas ao final de cada ciclo.
-- Usa o componente `Stopwatch` para o temporizador regressivo.
-- Principais funções:
-  - **handleTimerEnd**: Exibe um alerta ao fim do ciclo, perguntando se o usuário deseja iniciar outro temporizador.
-  - **saveStudyTime/loadStudyTime**: Salva e carrega o tempo total de estudo no AsyncStorage.
-  - Controla o fluxo entre estudo, intervalo curto e intervalo longo, atualizando o estado conforme o ciclo.
+As telas principais do app estão na pasta `views`:
 
-#### components/timer/Stopwatch.js
+- **Home.js**: É a tela inicial do app, exibindo um resumo do timer (sem botões de ação) e a lista de tarefas em um layout compacto. Utiliza o componente `ImageBackground` para aplicar o fundo personalizado e chama os componentes `Timer` e `Tasks` com propriedades que ocultam botões e imagens, tornando a tela mais enxuta.
 
-- Temporizador regressivo.
-- Recebe tempo inicial, controla decremento e notifica quando chega a zero.
-- Principais funções:
-  - **useEffect**: Controla o decremento do tempo e chama `onTimerEnd` ao chegar a zero.
-  - **formatTime**: Formata o tempo em minutos e segundos para exibição.
+- **Tasks.js**: Tela dedicada ao gerenciamento de tarefas. Permite ao usuário adicionar novas tarefas, editar, excluir e marcar como concluídas. As tarefas são persistidas localmente usando AsyncStorage, garantindo que não sejam perdidas ao fechar o app. As funções principais são:
 
----
+  - `addNewTask`: Adiciona uma nova tarefa à lista, gerando um ID único e limpando o formulário após a adição.
+  - `useFocusEffect`: Carrega as tarefas salvas no AsyncStorage sempre que a tela é acessada, garantindo que a lista esteja sempre atualizada.
+  - `useEffect`: Salva as tarefas no AsyncStorage sempre que a lista é modificada.
+  - Renderização condicional: Alterna entre o formulário de nova tarefa e a lista de tarefas, conforme a ação do usuário.
+  - Utiliza o componente `ListTasks` para exibir e gerenciar as tarefas.
 
-### Telas (Views)
+- **Timer.js**: Tela dedicada ao ciclo Pomodoro. Exibe o temporizador, controla o início e pausa do timer e mostra ao usuário qual será o próximo intervalo (estudo, intervalo curto ou longo). As funções principais são:
+  - Utiliza o contexto `TimerContext` para controlar o estado global do timer.
+  - Utiliza o componente `Intervals` para gerenciar os ciclos do Pomodoro.
+  - Exibe o botão de play/pause e o nome do próximo intervalo, permitindo ao usuário controlar facilmente o fluxo dos ciclos.
 
-#### views/Home.js
+## Fluxo de Uso
 
-- Tela inicial do app.
-- Exibe o timer (sem botões de ação) e a lista de tarefas em um layout compacto.
-- Usa `ImageBackground` para o fundo.
-- Chama os componentes `Timer` e `Tasks` com props para esconder botões e imagens.
+Ao abrir o app, o usuário tem acesso rápido ao timer Pomodoro e à lista de tarefas. O timer pode ser iniciado ou pausado a qualquer momento, alternando automaticamente entre períodos de estudo e intervalos. Ao final de cada ciclo, o app exibe um alerta para o usuário decidir se deseja continuar. As tarefas podem ser adicionadas, editadas, marcadas como concluídas ou removidas, e todas as informações são salvas localmente no dispositivo.
 
-#### views/Tasks.js
+A navegação por abas permite alternar facilmente entre as telas principais, enquanto a navegação em pilha possibilita transições para telas específicas quando necessário.
 
-- Tela de gerenciamento de tarefas.
-- Permite adicionar, editar, excluir e marcar tarefas como concluídas.
-- As tarefas são persistidas usando AsyncStorage.
-- Principais funções:
-  - **addNewTask**: Adiciona uma nova tarefa à lista.
-  - **useFocusEffect**: Carrega as tarefas do AsyncStorage ao entrar na tela.
-  - **useEffect**: Salva as tarefas no AsyncStorage sempre que a lista é alterada.
-  - Renderização condicional para formulário de nova tarefa ou lista de tarefas.
-  - Usa o componente `ListTasks` para exibir e gerenciar as tarefas.
+## Considerações Finais
 
-#### views/Timer.js
+O Doropomo não utiliza backend: todas as informações são salvas localmente, tornando o app rápido e seguro para uso pessoal. O código está organizado para facilitar a manutenção e expansão, com separação clara de responsabilidades entre componentes, contexto, navegação e views. Recomenda-se a leitura dos comentários nos arquivos para entender detalhes de implementação e facilitar futuras contribuições.
 
-- Tela do Pomodoro.
-- Exibe o temporizador, controla início/pausa e mostra qual será o próximo intervalo.
-- Principais funções:
-  - Usa o contexto `TimerContext` para controlar o estado do timer.
-  - Usa o componente `Intervals` para gerenciar os ciclos.
-  - Exibe o botão de play/pause e o nome do próximo intervalo.
+Para rodar o projeto, basta instalar as dependências com `npm install` e iniciar com `npm start`. O app pode ser executado em dispositivos Android, iOS ou na web utilizando Expo.
 
----
-
-## Fluxo Principal do App
-
-1. **Timer Pomodoro**
-
-   - O usuário inicia/pausa o timer.
-   - O app alterna entre períodos de estudo e intervalos (curtos e longos).
-   - Ao final de cada ciclo, um alerta é exibido para o usuário decidir se deseja continuar.
-
-2. **Gerenciamento de Tarefas**
-
-   - O usuário pode adicionar tarefas com título, peso, tempo estimado e dia da semana.
-   - As tarefas podem ser marcadas como concluídas, editadas ou removidas.
-   - As tarefas são salvas localmente no dispositivo.
-
-3. **Navegação**
-   - O app utiliza navegação por abas para alternar entre Home, Timer e Tasks.
-   - A navegação em pilha permite transições entre telas específicas.
-
----
-
-## Como Rodar o Projeto
-
-1. Instale as dependências:
-   ```sh
-   npm install
-   ```
-2. Inicie o app:
-   ```sh
-   npm start
-   ```
-   Ou use:
-   ```sh
-   npm run android
-   npm run ios
-   npm run web
-   ```
-
----
-
-## Dependências Principais
-
-- **React Native**: Framework principal para desenvolvimento mobile.
-- **Expo**: Ferramenta para facilitar o desenvolvimento e build.
-- **@react-navigation**: Navegação entre telas.
-- **AsyncStorage**: Persistência local de dados.
-- **react-native-uuid**: Geração de IDs únicos para tarefas.
-- **@expo/vector-icons**: Ícones para UI.
-
----
-
-## Observações
-
-- O app salva tarefas e tempo de estudo localmente, não havendo backend.
-- O código está organizado para facilitar manutenção e expansão.
-- Recomenda-se ler os comentários nos arquivos para detalhes de implementação.
-
----
-
-## Contribuição
-
-1. Faça um fork do projeto.
-2. Crie uma branch para sua feature/fix.
-3. Envie um pull request com uma descrição clara das mudanças.
-
----
-
-## Contato
-
-Dúvidas ou sugestões? Abra uma issue ou entre em contato com o mantenedor do projeto.
+Contribuições são bem-vindas! Basta fazer um fork, criar uma branch para sua feature ou correção e enviar um pull request com uma descrição clara das mudanças.
