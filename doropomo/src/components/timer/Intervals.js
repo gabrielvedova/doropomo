@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Text, View, StyleSheet, Dimensions, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Stopwatch from "./Stopwatch";
+import { TimerContext } from "../../context/TimerContext";
 
 export default ({
   totalCycles = 1,
@@ -9,10 +10,10 @@ export default ({
   study = 15,
   shortBreak = 3,
   longBreak = 9,
-  isRunning,
-  setIsRunning,
   setNextCurrent,
 }) => {
+  const { isRunning, setIsRunning } = useContext(TimerContext);
+
   const totalIntervals = Math.floor(cycleTime * 2 * totalCycles); // Total de intervalos de estudo e pausa
 
   const [currentInterval, setCurrentInterval] = useState(0); // Controle do intervalo atual
@@ -20,6 +21,8 @@ export default ({
   const [timerDuration, setTimerDuration] = useState(study); // Duração do temporizador atual
   const [qntdIntervals, setQntdIntervals] = useState(0); // Contador de intervalos
   const [totalStudyTime, setTotalStudyTime] = useState(0); // Tempo total de estudo acumulado
+  const [timerKey, setTimerKey] = useState(0);
+  const [alertShown, setAlertShown] = useState(false);
 
   // Carregar o tempo total de estudo do AsyncStorage ao montar o componente
   useEffect(() => {
@@ -46,6 +49,8 @@ export default ({
   };
 
   const handleTimerEnd = () => {
+    if (alertShown) return; // Evita múltiplas execuções
+    setAlertShown(true);
     Alert.alert(
       "Atenção!",
       "O tempo acabou! Gostaria de iniciar outro temporizador?",
@@ -54,6 +59,13 @@ export default ({
           text: "Não",
           onPress: () => {
             setIsRunning(false);
+            setCurrentType("study");
+            setCurrentInterval(0);
+            setQntdIntervals(0);
+            setTimerDuration(study);
+            setNextCurrent("Intervalo Curto");
+            setTimerKey((prev) => prev + 1); // força o reset do Stopwatch
+            setAlertShown(false); // Libera para o próximo ciclo
           },
           style: "cancel",
         },
@@ -97,6 +109,7 @@ export default ({
               setTimerDuration(study);
               setNextCurrent("Intervalo Curto");
             }
+            setAlertShown(false); // Libera para o próximo ciclo
           },
         },
       ],
@@ -111,6 +124,7 @@ export default ({
       ) : (
         <View style={styles.timerContainer}>
           <Stopwatch
+            key={timerKey}
             timer={timerDuration}
             onTimerEnd={handleTimerEnd}
             isRunning={isRunning}

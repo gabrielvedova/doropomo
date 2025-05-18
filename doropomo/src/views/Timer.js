@@ -23,11 +23,7 @@ export default ({ showButton = true }) => {
       imageStyle={{ opacity: 0.7 }}
     >
       <View style={[styles.container]}>
-        <Intervals
-          isRunning={isRunning}
-          setIsRunning={setIsRunning}
-          setNextCurrent={setNextCurrent}
-        />
+        <Intervals setNextCurrent={setNextCurrent} />
         {showButton && (
           <>
             <View
