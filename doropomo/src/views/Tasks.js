@@ -19,6 +19,7 @@ import { Picker } from "@react-native-picker/picker";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import colors from "../colors.json";
 import background from "../../assets/BackgroundDoropomo.png";
+import logo from "../../assets/doropomoLogo-removebg-preview.png";
 
 export default ({ showButton = true, showImage = true }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -180,8 +181,8 @@ export default ({ showButton = true, showImage = true }) => {
           <>
             {showImage && (
               <Image
-                source={require("../../assets/doropomoLogo.png")}
-                style={{ marginTop: 20, height: 256, width: 256 }} // ajuste os valores conforme desejar
+                source={logo}
+                style={{ marginTop: 20, height: 242, width: 242 }} // ajuste os valores conforme desejar
                 resizeMode="contain"
               />
             )}

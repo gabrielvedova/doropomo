@@ -18,9 +18,14 @@ export default ({ showButton = true }) => {
   return (
     <ImageBackground
       source={require("../../assets/BackgroundDoropomo.png")}
-      style={{ flex: 1, width: "100%", height: "100%" }}
+      style={{
+        flex: 1,
+        width: "100%",
+        height: "100%",
+        backgroundColor: showButton ? colors.background : "transparent",
+      }}
       resizeMode="cover"
-      imageStyle={{ opacity: 0.7 }}
+      imageStyle={{ opacity: showButton ? 0.7 : 0 }}
     >
       <View style={[styles.container]}>
         <Intervals setNextCurrent={setNextCurrent} />
