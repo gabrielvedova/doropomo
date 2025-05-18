@@ -7,9 +7,9 @@ import { TimerContext } from "../../context/TimerContext";
 export default ({
   totalCycles = 1,
   cycleTime = 4,
-  study = 15,
-  shortBreak = 3,
-  longBreak = 9,
+  study = 1500,
+  shortBreak = 300,
+  longBreak = 900,
   setNextCurrent,
 }) => {
   const { isRunning, setIsRunning } = useContext(TimerContext);
